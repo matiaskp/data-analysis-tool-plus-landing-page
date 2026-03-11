@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
+# Environment variables
+.env
+
+# Node / frontend
+node_modules/
+.next/
+dist/
+build/
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Excel temporary files
+~$*.xlsx
+
+# Logs
+*.log
