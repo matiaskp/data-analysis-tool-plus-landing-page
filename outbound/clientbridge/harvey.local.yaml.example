@@ -89,7 +89,7 @@ channels:
     send_to_risky: false
     max_bounce_rate: 0.03            # kill switch at 3%
     warmup:
-      start_date: "CHANGE_ME"        # YYYY-MM-DD, the day the sending mailbox starts
+      start_date: ""                 # CHANGE_ME to YYYY-MM-DD, the day the sending mailbox starts
       min_days: 14
       start_sends: 5
       daily_increase: 3
