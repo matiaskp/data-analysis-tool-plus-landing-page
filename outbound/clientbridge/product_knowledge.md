@@ -43,8 +43,9 @@ Live demo without signing up: clientbridge-crm.com/demo (or /es).
 | Enterprise | ask | any | sales-led; e-commerce storefront webhook |
 
 Priced per user, never per conversation or per message. Card payment through
-Paddle. For a business that can't pay by international card, the founder can
-set up the plan by hand (bank transfer): offer it if they bring it up.
+Paddle. In Paraguay they can also pay by bank transfer or QR (the site's FAQ
+says so) and the founder sets the plan up by hand. Prices can be quoted in
+guaraníes at the day's rate; leave the exact figure to the founder.
 
 ## Not live yet: never present these as available
 
@@ -71,7 +72,9 @@ sell online (Tiendanube, Shopify, WooCommerce) and answer questions on WhatsApp.
 ## Offers, in order
 
 1. The 2-minute demo (no signup) or trying the bot as a customer (/demo/try-bot).
-2. The founder sets up their bot menu with them on a 20-minute video call, at no charge.
+2. "Te lo configuro yo": the founder connects their number, imports their
+   contacts, loads products and the bot menu, and trains the team in a 1-hour
+   call. It's a one-time paid setup; never quote its price, the founder does.
 3. Starter at USD 15 per user. Only after real interest: founding-customer
    pricing (ask the founder; never offer a discount yourself).
 

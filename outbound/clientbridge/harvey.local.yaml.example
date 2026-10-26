@@ -1,0 +1,119 @@
+# ClientBridge's Harvey config. setup_clientbridge.py copies this to
+# harvey.local.yaml (gitignored, and it wins over harvey.yaml). Replace every
+# CHANGE_ME, then run the setup script again: it says "complete" when done.
+
+persona:
+  name: "CHANGE_ME"                  # your first name, as you sign
+  company: "ClientBridge"
+  role: "Fundador"
+  email: "CHANGE_ME"                 # the separate sending mailbox, never clientbridge-crm.com
+  linkedin: ""
+  tone: "cercano, directo y breve; habla de tú a tú con el dueño de un negocio, sin vender humo"
+
+product:
+  name: "ClientBridge"
+  description: >-
+    CRM hecho en Paraguay para negocios que venden por WhatsApp: cada chat queda
+    guardado como cliente, todo el equipo atiende el mismo número desde la
+    computadora, y desde ahí se arman los negocios, las tareas y las facturas.
+    Los datos completos están en skills/product_knowledge.md.
+  pricing: "Desde USD 15 por usuario al mes (Starter). Plan Free sin WhatsApp."
+  key_benefits:
+    - "Ningún chat se pierde: cada persona que escribe queda guardada con su historial"
+    - "Todo el equipo atiende el mismo WhatsApp desde la computadora, cada chat con su responsable"
+    - "Del chat a la factura y el stock, sin copiar pedidos a un Excel"
+    - "Un bot de menú responde fuera de horario y pasa el chat a una persona cuando hace falta (Business)"
+  objection_responses:
+    "muy caro": "Se paga por usuario, no por mensaje: con dos personas son USD 30 al mes. ¿Cuánto vale un pedido que se pierde porque nadie contestó?"
+    "ya uso whatsapp business": "Perfecto, ClientBridge se conecta a ese mismo número escaneando un QR. Lo que suma es que todo el equipo lo ve y cada chat queda guardado como cliente."
+    "no tengo tiempo": "Por eso te lo configuro yo: conectamos tu número, cargamos tus contactos y productos, y tu equipo queda usándolo en una llamada."
+    "no me interesa": "Entendido, no te escribo más."
+  offer:
+    primary: "Starter a USD 15 por usuario al mes, con la configuración hecha por el fundador"
+    entry: "una demo de 10 minutos con tu negocio, o probar el bot como cliente en clientbridge-crm.com/demo/try-bot"
+    goal: "get_reply"
+    booking_method: "ask_preference"
+    booking_url: ""
+    meeting_duration: "10 minutos"
+    meeting_owner: "el fundador"
+
+icp:
+  # OpenStreetMap only finds trades it has tags for (see TAG_MAP in
+  # harvey/collectors/discover.py); these all match one. The first cohort in
+  # PLAYBOOK.md is the first three, in Gran Asunción.
+  industries:
+    - "inmobiliaria"
+    - "distribuidora mayorista"
+    - "tienda de ropa"
+    - "concesionaria de autos"
+    - "motos"
+    - "mueblería"
+    - "estética"
+    - "consultorio odontológico"
+    - "agencia de viajes"
+    - "gimnasio"
+  company_size: "2-50 empleados"
+  titles:
+    - "Dueño"
+    - "Gerente general"
+    - "Gerente comercial"
+    - "Encargado de ventas"
+  geography:
+    - "Gran Asunción"
+    - "Ciudad del Este"
+    - "Encarnación"
+  # lat,lng,radius_km. 20 km around Asunción covers San Lorenzo, Luque,
+  # Lambaré, Fernando de la Mora and Capiatá.
+  geo_coordinates:
+    "Gran Asunción": "-25.3000,-57.5900,20"
+    "Ciudad del Este": "-25.5097,-54.6111,12"
+    "Encarnación": "-27.3306,-55.8667,10"
+  hiring_signals:
+    - "vendedor"
+    - "vendedora"
+    - "atención al cliente"
+    - "recepcionista"
+    - "community manager"
+
+locale:
+  language: "es"
+  country: "PY"
+
+channels:
+  email:
+    enabled: true
+    provider: "gmail"
+    max_daily_sends: 30
+    require_approval: true           # every email waits in the Outbox for you
+    link_domains: ["clientbridge-crm.com"]
+    send_to_risky: false
+    max_bounce_rate: 0.03            # kill switch at 3%
+    warmup:
+      start_date: "CHANGE_ME"        # YYYY-MM-DD, the day the sending mailbox starts
+      min_days: 14
+      start_sends: 5
+      daily_increase: 3
+    send_window:
+      start: "08:30"
+      end: "17:30"
+      weekdays_only: true
+      recipient_timezone: false      # everyone is in Paraguay: quiet_hours.timezone
+  linkedin:
+    enabled: false
+
+usage:
+  max_daily_claude_percent: 50       # leave room for your own Claude use
+  heartbeat_interval_minutes: 15
+  quiet_hours:
+    start: "21:00"
+    end: "07:00"
+    timezone: "America/Asuncion"
+
+compliance:
+  # Ley 7593/2025: a real address where you receive mail.
+  postal_address: "CHANGE_ME"
+  opt_out_line: '¿No te interesa? Responde "no, gracias" y no te vuelvo a escribir.'
+  # Add every customer's domain here as they sign up.
+  do_not_contact: []
+  precleared:
+    enabled: false                   # covers UK/US/CA/DE/FR law, not Paraguay

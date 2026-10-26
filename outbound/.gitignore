@@ -59,4 +59,6 @@ skills/competitive_intel.md
 harvey.local.yaml
 # Backups and in-progress writes from `harvey train` hold the same config.
 harvey.local.yaml.*
+# ...except the ClientBridge template, which holds no secrets.
+!clientbridge/harvey.local.yaml.example
 harvey.yaml.*
