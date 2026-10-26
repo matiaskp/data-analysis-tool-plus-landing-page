@@ -375,6 +375,8 @@ class DiscoveryQuery:
     depth: int = 30                  # SERP depth; ignored by listings providers
     limit: int = 100                 # max records to take from one query
     preset: str = ""                 # PRESETS key that built it, if any
+    language: str = "en"             # search language (locale.language)
+    country: str = ""                # market country code (locale.country), "PY"
 
     def keyword(self) -> str:
         return f"{self.term} {self.location}".strip()
@@ -630,7 +632,7 @@ class DataForSEOSerp(DiscoveryProvider):
     async def fetch(self, client, env, query):
         keyword = query.keyword()
         items = await self._post(client, env, "serp/google/organic/live/advanced", {
-            "keyword": keyword, "language_code": "en", "depth": query.depth,
+            "keyword": keyword, "language_code": query.language, "depth": query.depth,
             "device": "desktop", **_dfs_location(query, self.POINT_RADIUS)})
 
         # One Business per identity: a company in the pack AND at organic 14
@@ -710,7 +712,7 @@ class DataForSEOMaps(DataForSEOSerp):
     async def fetch(self, client, env, query):
         keyword = query.keyword()
         items = await self._post(client, env, "serp/google/maps/live/advanced", {
-            "keyword": keyword, "language_code": "en", "depth": query.depth,
+            "keyword": keyword, "language_code": query.language, "depth": query.depth,
             **_dfs_location(query, self.ZOOM)})
         out = []
         for item in items:
@@ -790,7 +792,10 @@ class Serper(DiscoveryProvider):
             "https://google.serper.dev/search",
             headers={"X-API-KEY": env["serper_api_key"],
                      "Content-Type": "application/json"},
-            json={"q": query.keyword(), "num": min(query.depth, 100)},
+            json={"q": query.keyword(), "num": min(query.depth, 100),
+                  # Results in the market's language and country, not US English.
+                  **({"hl": query.language} if query.language != "en" else {}),
+                  **({"gl": query.country.lower()} if query.country else {})},
         )
         r.raise_for_status()
         data = r.json()
@@ -1025,6 +1030,33 @@ class OpenStreetMap(DiscoveryProvider):
         "attorney": ['office=lawyer'],
         "contractor": ['craft=builder', 'office=construction_company'],
         "landscap": ['craft=gardener', 'shop=garden_centre'],
+        # Storefront businesses that sell over chat, in English and Spanish.
+        "real estate": ['office=estate_agent'],
+        "inmobiliari": ['office=estate_agent'],
+        "wholesale": ['shop=wholesale'],
+        "distribuidor": ['shop=wholesale'],
+        "mayorista": ['shop=wholesale'],
+        "car dealer": ['shop=car'],
+        "concesionari": ['shop=car'],
+        "motorcycle": ['shop=motorcycle'],
+        "motos": ['shop=motorcycle'],
+        "car rental": ['amenity=car_rental'],
+        "rent a car": ['amenity=car_rental'],
+        "odontol": ['amenity=dentist'],
+        "beauty": ['shop=beauty', 'shop=cosmetics'],
+        "estética": ['shop=beauty', 'shop=cosmetics'],
+        "estetica": ['shop=beauty', 'shop=cosmetics'],
+        "clinic": ['amenity=clinic', 'healthcare=clinic'],
+        "clínica": ['amenity=clinic', 'healthcare=clinic'],
+        "travel agen": ['shop=travel_agency'],
+        "agencia de viaje": ['shop=travel_agency'],
+        "academ": ['amenity=language_school', 'amenity=music_school', 'amenity=driving_school'],
+        "gym": ['leisure=fitness_centre'],
+        "gimnasio": ['leisure=fitness_centre'],
+        "clothing": ['shop=clothes', 'shop=boutique'],
+        "tienda de ropa": ['shop=clothes', 'shop=boutique'],
+        "furniture": ['shop=furniture'],
+        "mueble": ['shop=furniture'],
     }
 
     def _tags(self, term: str) -> list[str]:
@@ -1327,10 +1359,14 @@ def build_queries(config, cities: list[str] | None = None,
             v.strip() for t in terms for v in [t, *variants.get(t, [])] if v.strip()))
         places = cities if cities is not None else list(icp.geography) or [""]
     coords = getattr(icp, "geo_coordinates", {}) or {}
+    locale = getattr(config, "locale", None)
+    language = getattr(locale, "language", "") or "en"
+    country = getattr(locale, "country", "") or ""
 
     return [
         DiscoveryQuery(term=term, location=place, depth=depth, limit=limit,
-                       coordinate=coords.get(place, ""), preset=preset if spec else "")
+                       coordinate=coords.get(place, ""), preset=preset if spec else "",
+                       language=language, country=country)
         for term in terms
         for place in places
     ]

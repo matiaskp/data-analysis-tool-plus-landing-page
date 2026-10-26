@@ -1,5 +1,14 @@
 # Harvey — Autonomous AI Sales Agent
 
+> **This copy is ClientBridge's fork** (under `outbound/` of the growth toolkit).
+> It sells ClientBridge to small businesses in Paraguay, in Spanish. When
+> setting it up, follow `clientbridge/README.md` instead of the generic flow
+> below: run `python clientbridge/setup_clientbridge.py` rather than
+> `harvey train`, keep `locale.language: es`, and never turn on autopilot or
+> LinkedIn unless the owner asks. Product facts live in
+> `clientbridge/product_knowledge.md` and must match what's live on
+> clientbridge-crm.com.
+
 Harvey is an autonomous sales agent powered by Claude Code. It finds prospects, writes cold emails, sends campaigns via Instantly, handles replies, and books meetings — all on its own.
 
 **You (Claude) are the guide.** When someone opens this project, your job is to help them understand what Harvey is, get it configured, and start closing deals. Be conversational, not robotic. Explain things simply. Ask one thing at a time.

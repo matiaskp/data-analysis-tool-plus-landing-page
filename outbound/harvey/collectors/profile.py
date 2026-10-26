@@ -1129,6 +1129,18 @@ class ProfileCollector:
         # Booking gap
         add("NO_ONLINE_BOOKING", num=0 if self._any(home, BOOKING_HINTS) else 1)
 
+        # Messaging: do they sell over WhatsApp, how many numbers, with what tool
+        from harvey.collectors import messaging
+        add("WHATSAPP_CONTACT", num=1 if messaging.has_whatsapp_contact(home) else 0)
+        add("WHATSAPP_NUMBERS", num=messaging.whatsapp_numbers(home))
+        tools = messaging.chat_tools(home)
+        if tools:
+            add("INCUMBENT_CHAT_TOOL", text=", ".join(tools))
+        stores = messaging.ecom_platforms(home)
+        if stores:
+            add("ECOM_PLATFORM", text=", ".join(stores))
+        add("INSTAGRAM_LINKED", num=1 if messaging.has_instagram(home) else 0)
+
         # The About page, fetched once for the startup signals below.
         about_page: list[tuple[str, str]] = []
 

@@ -202,6 +202,67 @@ SIGNAL_CATALOG: list[dict] = [
         "confidence_floor": 0.0,
     },
     {
+        "code": "WHATSAPP_CONTACT",
+        "label": "Sells over WhatsApp",
+        "description": (
+            "The site sends customers to WhatsApp: a wa.me or click-to-chat link, "
+            "a WhatsApp chat widget, or a 'write to us on WhatsApp' call to action. "
+            "Their chats are their sales pipeline."
+        ),
+        "category": "profile",
+        "value_type": "bool",
+        "collector": "profile",
+        "cost_note": "free (homepage HTML)",
+        "confidence_floor": 0.0,
+    },
+    {
+        "code": "WHATSAPP_NUMBERS",
+        "label": "WhatsApp numbers listed",
+        "description": (
+            "How many different WhatsApp numbers the site's chat links open. Two or "
+            "more usually means several people or branches answering customers."
+        ),
+        "category": "profile",
+        "value_type": "num",
+        "collector": "profile",
+        "cost_note": "free (homepage HTML)",
+        "confidence_floor": 0.0,
+    },
+    {
+        "code": "INCUMBENT_CHAT_TOOL",
+        "label": "Chat / CRM tool in use",
+        "description": (
+            "A chat, chatbot or CRM tool embedded on the site (Kommo, Leadsales, "
+            "Whaticket, Cliengo, HubSpot, Tidio…): who you'd be replacing, or a "
+            "reason to leave them out."
+        ),
+        "category": "profile",
+        "value_type": "text",
+        "collector": "profile",
+        "cost_note": "free (homepage HTML)",
+        "confidence_floor": 0.0,
+    },
+    {
+        "code": "ECOM_PLATFORM",
+        "label": "Online store platform",
+        "description": "The store platform the site runs on (Tiendanube, Shopify, WooCommerce, VTEX…).",
+        "category": "profile",
+        "value_type": "text",
+        "collector": "profile",
+        "cost_note": "free (homepage HTML)",
+        "confidence_floor": 0.0,
+    },
+    {
+        "code": "INSTAGRAM_LINKED",
+        "label": "Links its Instagram",
+        "description": "The site links the business's Instagram profile: it sells on social too.",
+        "category": "profile",
+        "value_type": "bool",
+        "collector": "profile",
+        "cost_note": "free (homepage HTML)",
+        "confidence_floor": 0.0,
+    },
+    {
         "code": "SITE_PAGE_COUNT",
         "label": "Site size",
         "description": "Page count from sitemap.xml. A very thin site suggests little investment; a large stale one suggests neglect.",

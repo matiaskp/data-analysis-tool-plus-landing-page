@@ -71,15 +71,26 @@ OPT_OUT_PATTERNS = (
     "never contact",
     "delete my info",
     "delete my data",
+    # Spanish. Accents are often dropped when people type fast, so both.
+    "darme de baja", "dame de baja", "denme de baja", "dar de baja",
+    "darse de baja", "no me escribas", "no me escriban", "no me escriba",
+    "no me contactes", "no me contacten", "no vuelvas a escribir",
+    "no me vuelvas a escribir", "no quiero recibir", "no quiero mas correos",
+    "no quiero más correos", "sacame de", "sácame de", "quitame de",
+    "quítame de", "borrar mis datos", "borren mis datos", "eliminar mis datos",
+    "eliminen mis datos", "eliminame de", "elimíname de",
 )
 # "No thanks" (what cold email's footer asks for) as a phrase: not "no
 # Thanksgiving", "Bruno / Thanks," or "yes or no, thanks".
 # Checked one line at a time: "...the answer is no / Thanks!" is a sign-off.
 NO_THANKS_RE = re.compile(
-    r"(?<!\bor )\bno,?[ \t]+thank(?:s|[ \t]+you)\b(?![ \t]+(?:needed|necessary|required))")
+    r"(?<!\bor )\bno,?[ \t]+thank(?:s|[ \t]+you)\b(?![ \t]+(?:needed|necessary|required))"
+    # Spanish footer's "no, gracias", but not "sí o no, gracias".
+    r"|(?<!\bo )\bno,?[ \t]+gracias\b")
 # A reply that says only this (signature aside) is an opt-out ("Reply STOP").
 BARE_OPT_OUTS = {"stop", "unsubscribe", "remove", "remove me", "opt out",
-                 "no thanks", "no thank you"}
+                 "no thanks", "no thank you",
+                 "no gracias", "baja", "de baja", "no me interesa", "no nos interesa"}
 _MOBILE_SIGNATURE_RE = re.compile(
     r"^[ \t]*(?:sent from my \w[^\n]*|get outlook for \w[^\n]*|sent from \w+ mail[^\n]*)$",
     re.IGNORECASE | re.MULTILINE)

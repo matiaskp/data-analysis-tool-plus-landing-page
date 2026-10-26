@@ -25,7 +25,24 @@ BANNED_PHRASES = (
     "cutting-edge solution", "revolutionize your", "unlock your",
     "supercharge your", "as an ai", "i'm an ai", "i am an ai",
     "as a language model",
+    # Spanish (locale.language: es): the same spam triggers and AI tells.
+    "espero que te encuentres bien", "espero que estés bien",
+    "espero que este correo te encuentre", "quería contactarte",
+    "me pongo en contacto contigo", "solo quería", "solo te escribo para",
+    "al siguiente nivel", "lleva tu negocio", "revoluciona tu",
+    "haz clic aquí", "haz click aquí", "oferta especial", "oferta exclusiva",
+    "por tiempo limitado", "sin compromiso", "100% gratis", "felicidades",
+    "como ia", "soy una ia", "como modelo de lenguaje",
 )
+
+# Spanish copy is written in "tú": never "usted", and never voseo (the
+# "vos" forms common in Paraguay and Argentina). "ustedes" stays allowed:
+# it's the ordinary Latin American plural, informal included. Whole words.
+SPANISH_REGISTER_RE = re.compile(
+    r"\b(?:usted|vos|tenés|tenes|podés|querés|sabés|hacés|necesitás|"
+    r"buscás|decís|mirá|probá|escribime|escribinos|contame|contanos|decime|"
+    r"avisame|avisanos|llamame|fijate|contactanos|consultanos)\b",
+    re.IGNORECASE)
 
 MAX_SUBJECT_LEN = 90
 MAX_BODY_WORDS = 220        # hard ceiling; sequences aim far lower
@@ -202,6 +219,9 @@ def pre_send_check(
     hits = [p for p in BANNED_PHRASES if p in lowered]
     if hits:
         reasons.append(f"banned phrases: {hits[:3]}")
+    register = sorted({m.lower() for m in SPANISH_REGISTER_RE.findall(subject + " " + body)})
+    if register:
+        reasons.append(f"Spanish register is tú, not usted/voseo: {register[:3]}")
 
     # Link budget: cold email with links goes to spam
     links = URL_RE.findall(body)

@@ -376,9 +376,10 @@ DEFAULT_OPT_OUT_LINE = 'Not interested? Reply "no thanks" and I won\'t email aga
 # The replies the Handler always honours as an opt-out on their own; an
 # opt_out_line must ask for one of them ("Reply STOP", 'reply "no thanks"').
 OPT_OUT_WORDS = ("no thanks", "no thank you", "unsubscribe", "stop", "remove me",
-                 "opt out")
+                 "opt out", "no, gracias", "no gracias", "baja")
 _ASKS_FOR_OPT_OUT_RE = re.compile(
-    r"\breply(?:\s+with)?\s*[\"'\u201c\u2018]?\s*(?:"
+    r"\b(?:reply(?:\s+with)?|responde(?:me)?(?:\s+con)?|contesta(?:me)?(?:\s+con)?)"
+    r"\s*[\"'\u201c\u2018\u00ab]?\s*(?:"
     + "|".join(re.escape(w) for w in OPT_OUT_WORDS) + r")\b", re.IGNORECASE)
 
 
@@ -596,6 +597,40 @@ class WriterConfig(BaseModel):
     humanizer: bool = False
 
 
+class LocaleConfig(BaseModel):
+    """The language Harvey searches and writes in, and the market it sells to.
+
+    ``language`` is an ISO 639-1 code: it sets the search language sent to
+    discovery providers, and anything but English makes the writer, sender and
+    handler load ``skills/locale_<language>.md`` (how to write in that
+    language: register, phrases to avoid, the opt-out wording). ``country`` is
+    the ISO 3166 code of the market, used where a place needs one.
+    """
+    language: str = "en"
+    country: str = ""
+
+    @field_validator("language", "country", mode="before")
+    @classmethod
+    def _code(cls, v):
+        return (v or "").strip()
+
+    @field_validator("language")
+    @classmethod
+    def _language_code(cls, v: str) -> str:
+        v = v.lower() or "en"
+        if not re.fullmatch(r"[a-z]{2}", v):
+            raise ValueError("locale.language must be a two-letter code such as en or es")
+        return v
+
+    @field_validator("country")
+    @classmethod
+    def _country_code(cls, v: str) -> str:
+        v = v.upper()
+        if v and not re.fullmatch(r"[A-Z]{2}", v):
+            raise ValueError("locale.country must be a two-letter code such as PY")
+        return v
+
+
 class HarveyConfig(BaseModel):
     persona: PersonaConfig
     product: ProductConfig
@@ -605,6 +640,7 @@ class HarveyConfig(BaseModel):
     brain: BrainConfig = BrainConfig()
     compliance: ComplianceConfig = ComplianceConfig()
     writer: WriterConfig = WriterConfig()
+    locale: LocaleConfig = LocaleConfig()
     # The file it was loaded from, so a running Harvey can re-read the
     # sending mode from that same file (refresh_sending_mode).
     _source_path: str | None = PrivateAttr(default=None)

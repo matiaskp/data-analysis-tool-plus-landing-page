@@ -80,11 +80,14 @@ class BrainUnavailable(Exception):
 
 
 class Brain:
-    def __init__(self, state: StateManager, brain_config=None):
+    def __init__(self, state: StateManager, brain_config=None, language: str = "en"):
         from harvey.config import BrainConfig
 
         self.state = state
         self.config = brain_config or BrainConfig()
+        # locale.language: anything but English adds skills/locale_<lang>.md
+        # to every agent that writes to prospects.
+        self.language = (language or "en").lower()
         self.provider = self.config.provider
         self.model = self.config.model
         self.codex = None
@@ -724,6 +727,10 @@ class Brain:
         skill_names = skill_map.get(agent_name, [])
         if not skill_names:
             return ""
+        if self.language != "en" and agent_name in ("writer", "handler", "sender"):
+            # First, so the language rules frame every playbook that follows
+            # (the playbooks themselves are written in English).
+            skill_names = [f"locale_{self.language}", *skill_names]
 
         sections = []
         for name in skill_names:

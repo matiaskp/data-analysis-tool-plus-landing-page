@@ -263,7 +263,7 @@ async def heartbeat(stop_event: asyncio.Event | None = None):
         return
     env = load_env()
     state = StateManager()
-    brain = Brain(state, config.brain)
+    brain = Brain(state, config.brain, language=config.locale.language)
     logger.info(
         f"Thinking with {brain.provider_label}"
         + (f" ({brain.model})" if brain.model else "")

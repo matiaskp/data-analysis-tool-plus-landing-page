@@ -327,7 +327,7 @@ async def test_main_heartbeat_builds_brain_from_config(monkeypatch):
     class StopBrain(Exception):
         pass
 
-    def fake_brain(state, brain_config=None):
+    def fake_brain(state, brain_config=None, language="en"):
         seen["config"] = brain_config
         raise StopBrain
 

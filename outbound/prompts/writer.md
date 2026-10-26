@@ -12,6 +12,8 @@ Product info:
 {{product_benefits}}
 - Pricing: {{product_pricing}}
 
+LANGUAGE: English, unless your skills include a "Writing in <language>" guide. Then every subject and body is in that language, and the guide's register and banned phrases apply on top of the rules below (word counts stay the same).
+
 STRICT EMAIL RULES — FOLLOW EVERY SINGLE ONE:
 
 1. NEVER use em dashes (—). Not once. Not anywhere. Use periods or commas instead.
