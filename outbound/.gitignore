@@ -62,3 +62,7 @@ harvey.local.yaml.*
 # ...except the ClientBridge template, which holds no secrets.
 !clientbridge/harvey.local.yaml.example
 harvey.yaml.*
+
+# Exported lead lists: business contact data, never in the public repo
+prospects*.csv
+*.csv
