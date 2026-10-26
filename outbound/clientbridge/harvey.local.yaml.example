@@ -63,11 +63,13 @@ icp:
     - "Ciudad del Este"
     - "Encarnación"
   # lat,lng,radius_km. 20 km around Asunción covers San Lorenzo, Luque,
-  # Lambaré, Fernando de la Mora and Capiatá.
+  # Lambaré, Fernando de la Mora and Capiatá. The two border cities are kept
+  # small and pulled away from the river: wider circles took in Posadas,
+  # Foz do Iguaçu and Puerto Iguazú (a third of the first run's results).
   geo_coordinates:
     "Gran Asunción": "-25.3000,-57.5900,20"
-    "Ciudad del Este": "-25.5097,-54.6111,12"
-    "Encarnación": "-27.3306,-55.8667,10"
+    "Ciudad del Este": "-25.5050,-54.6600,6"
+    "Encarnación": "-27.3150,-55.8550,4"
   hiring_signals:
     - "vendedor"
     - "vendedora"
